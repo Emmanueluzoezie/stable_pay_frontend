@@ -1,10 +1,13 @@
 "use client"
 import axios from 'axios'
-import React from 'react'
+import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from "react-hot-toast"
+import QRCode from 'react-qr-code';
 
 const QrCodeForm = () => {
+    const [qrCodeUrl, setQrCodeUrl] = useState<string>("")
+    
     const {
         register,
         handleSubmit,
@@ -15,22 +18,25 @@ const QrCodeForm = () => {
     const onSubmit = async (data: QrCode) => {
         const notification = toast.loading('Starting');
         try {
-            const requestBody = {
+            const requestBody: QrCodes = {
                 recipient: data.recipient,
-                reference: data.reference,
-                amount: data.amount,
+                references: [`${data.references}`],
+                amount: Number(data.amount),
                 label: data.label,
                 splToken: data.splToken,
                 message: data.message,
                 memo: data.memo,
             }
 
-            const response = await axios.post("https://stable-pay-production.up.railway.app/tx/createSplit", requestBody);
+            const response = await axios.post("http://localhost:3300/tx/createQR", requestBody);
+            setQrCodeUrl(response.data)
             console.log(response.data);
 
-            toast.success('Success', { id: notification });
+
+            toast.success('Qrcode is Successfully created..', { id: notification });
         } catch (error) {
             console.error('Error:', error);
+            console.log('Error:', error);
             toast.error('Error', { id: notification });
         }
     }
@@ -48,8 +54,8 @@ const QrCodeForm = () => {
                     </div>
                     <div className='py-2'>
                         <label className='font-mono pl-4 text-sm'>Reference</label>
-                        <input {...register("reference", { required: true })} type="text" className='border-2 w-full rounded-lg p-2 outline-none border-gray-400' />
-                        {errors.reference && <span> Reference field is required</span>}
+                        <input {...register("references", { required: true })} type="text" className='border-2 w-full rounded-lg p-2 outline-none border-gray-400' />
+                        {errors.references && <span> Reference field is required</span>}
                     </div>
                     <div className='py-2'>
                         <label className='font-mono pl-4 text-sm'>Amount</label>
@@ -82,6 +88,8 @@ const QrCodeForm = () => {
                         <input type="submit" className='p-2 bg-blue-400 px-10 rounded-md font-semibold font-serif' />
                     </div>
                 </form>
+                {/* {qrCodeUrl && <QRCode value={qrCodeUrl} />} */}
+                {qrCodeUrl && <QRCode value={qrCodeUrl} />}
             </div>
         </div>
     )

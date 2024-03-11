@@ -4,7 +4,7 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from "react-hot-toast"
 
-const MerchantForm = () => { 
+const RegisterForm = () => { 
 
     const {
         register,
@@ -21,10 +21,12 @@ const MerchantForm = () => {
                 devnet: true
             };
 
+            localStorage.setItem('payAccount', data.merchantPublicKey);
+
             const response = await axios.post("https://stable-pay-production.up.railway.app/tx/createSplit", requestBody);
             console.log(response.data);
 
-            toast.success('Success', { id: notification });
+            toast.success('Account is successfully created', { id: notification });
         } catch (error) {
             console.error('Error:', error);
             toast.error('Error', { id: notification });
@@ -49,4 +51,4 @@ const MerchantForm = () => {
   )
 }
 
-export default MerchantForm
+export default RegisterForm
