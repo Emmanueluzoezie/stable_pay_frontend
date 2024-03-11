@@ -28,7 +28,7 @@ const QrCodeForm = () => {
                 memo: data.memo,
             }
 
-            const response = await axios.post("https://stable-pay-production.up.railway.app/tx/createSplit", requestBody);
+            const response = await axios.post("https://stable-pay-production.up.railway.app/tx/createQR", requestBody);
             setQrCodeUrl(response.data)
             console.log(response.data);
 
