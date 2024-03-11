@@ -20,7 +20,7 @@ const QrCodeForm = () => {
         try {
             const requestBody: QrCodes = {
                 recipient: data.recipient,
-                references: data.references,
+                refrences: data.refrences,
                 amount: Number(data.amount),
                 label: data.label,
                 splToken: data.splToken,
@@ -54,8 +54,8 @@ const QrCodeForm = () => {
                     </div>
                     <div className='py-2'>
                         <label className='font-mono pl-4 text-sm'>Reference</label>
-                        <input {...register("references", { required: true })} type="text" className='border-2 w-full rounded-lg p-2 outline-none border-gray-400' />
-                        {errors.references && <span> Reference field is required</span>}
+                        <input {...register("refrences", { required: true })} type="text" className='border-2 w-full rounded-lg p-2 outline-none border-gray-400' />
+                        {errors.refrences && <span> Reference field is required</span>}
                     </div>
                     <div className='py-2'>
                         <label className='font-mono pl-4 text-sm'>Amount</label>

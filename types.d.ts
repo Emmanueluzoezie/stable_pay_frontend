@@ -4,7 +4,7 @@ type QrCode = {
     message: string
     label: string
     recipient: string
-    references: string[]
+    refrences: string[]
     splToken: string
 }
 
@@ -14,7 +14,7 @@ type QrCodes = {
     message: string
     label: string
     recipient: string
-    references: string[]
+    refrences: string[]
     splToken: string
 }
 
