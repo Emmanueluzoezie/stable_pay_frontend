@@ -1,19 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function POST(request: NextApiRequest, response: NextApiResponse) {
+export function Get(req: NextApiRequest, res: NextApiResponse) {
     const payingAcct = localStorage.getItem('payingAcct');
-
     if (!payingAcct) {
-        return response.status(400).json({ message: 'payingAcct not found in localStorage' });
+        return res.status(400).json({ message: 'payingAcct not found in localStorage' });
     }
 
-    const webhookPayingAcct = request.body.payingAcct;
+    const webhookPayingAcct = req.body.payingAcct;
 
     if (payingAcct === webhookPayingAcct) {
-        // Process the webhook
-        response.status(200).json({ message: 'Webhook processed successfully' });
+        res.status(200).json({ message: 'Webhook processed successfully' });
     } else {
-        // Reject the request
-        response.status(403).json({ message: 'Unauthorized' });
+        res.status(403).json({ message: 'Unauthorized' });
     }
 }
