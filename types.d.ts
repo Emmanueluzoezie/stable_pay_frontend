@@ -3,9 +3,8 @@ type QrCode = {
     memo: string
     message: string
     label: string
-    recipient: string
     refrences: string[]
-    splToken: string
+    splToken?: string
 }
 
 type QrCodes = {
@@ -15,7 +14,7 @@ type QrCodes = {
     label: string
     recipient: string
     refrences: string[]
-    splToken: string
+    splToken?: string
 }
 
 type Merchant = {

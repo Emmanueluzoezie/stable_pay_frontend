@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from "react-hot-toast"
 
@@ -13,6 +13,8 @@ const RegisterForm = () => {
         formState: { errors },
     } = useForm<Merchant>()
 
+    
+
     const onSubmit = async (data: Merchant) => {
         const notification = toast.loading('Starting');
         try {
@@ -21,17 +23,22 @@ const RegisterForm = () => {
                 devnet: true
             };
 
-            localStorage.setItem('payAccount', data.merchantPublicKey);
-
+            
             const response = await axios.post("https://stable-pay-production.up.railway.app/tx/createSplit", requestBody);
-            console.log(response.data);
-
+            
+            await localStorage.setItem('payAccount', response.data.split.payingAccount);
+            console.log(response.data.split.payingAccount)
             toast.success('Account is successfully created', { id: notification });
         } catch (error) {
             console.error('Error:', error);
             toast.error('Error', { id: notification });
         }
     };
+
+    useEffect(() => {
+        const payingAcct = localStorage.getItem('payAccount');
+        console.log("payingAcctpayingAcct",payingAcct)
+    }, [])
 
 
   return (
