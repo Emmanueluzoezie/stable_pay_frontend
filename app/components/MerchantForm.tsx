@@ -1,9 +1,11 @@
 "use client"
+import axios from 'axios'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from "react-hot-toast"
 
-const MerchantForm = () => {
+const MerchantForm = () => { 
+
     const {
         register,
         handleSubmit,
@@ -11,16 +13,23 @@ const MerchantForm = () => {
         formState: { errors },
     } = useForm<Merchant>()
 
-    const onSubmit: SubmitHandler<Merchant> = (data) => {
-        const notification = toast.loading("staring")
-        try{
+    const onSubmit = async (data: Merchant) => {
+        const notification = toast.loading('Starting');
+        try {
+            const requestBody = {
+                recipient: { publicKey: data.merchantPublicKey },
+                devnet: true
+            };
 
-            toast.success("success", { id: notification })
+            const response = await axios.post("https://stable-pay-production.up.railway.app/tx/createSplit", requestBody);
+            console.log(response.data);
 
-        } catch(error){
-            toast.error("error", { id: notification })
+            toast.success('Success', { id: notification });
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Error', { id: notification });
         }
-    }
+    };
 
 
   return (
