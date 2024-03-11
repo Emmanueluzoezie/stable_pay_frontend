@@ -20,7 +20,7 @@ const QrCodeForm = () => {
         try {
             const requestBody: QrCodes = {
                 recipient: data.recipient,
-                references: [`${data.references}`],
+                references: data.references,
                 amount: Number(data.amount),
                 label: data.label,
                 splToken: data.splToken,
