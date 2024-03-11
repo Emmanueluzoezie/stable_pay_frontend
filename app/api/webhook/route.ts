@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { toast } from "react-hot-toast";
 
 export async function POST(request: Request) {
     const payingAcct = localStorage.getItem('payingAcct');
@@ -6,10 +7,15 @@ export async function POST(request: Request) {
         return NextResponse.json({message: 'payingAcct not found in localStorage'} );
     }
 
-    const webhookPayingAcct = await request.json()
+    const data = await request.json()
 
-    if (payingAcct === webhookPayingAcct?.payingAcct) {
-        return NextResponse.json({ message: 'Webhook processed successfully' });
+    if (payingAcct === data?.receiver) {
+        toast.success("payment is received successfully")
+        return NextResponse.json({ 
+            sender: data.sender,
+            receiver: data.receiver,
+            description: data.description
+        });
     } else {
         return NextResponse.json({ message: 'Unauthorized'});
     }

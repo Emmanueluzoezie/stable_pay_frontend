@@ -7,7 +7,7 @@ import QRCode from 'react-qr-code';
 
 const QrCodeForm = () => {
     const [qrCodeUrl, setQrCodeUrl] = useState<string>("")
-    
+
     const {
         register,
         handleSubmit,
@@ -28,7 +28,7 @@ const QrCodeForm = () => {
                 memo: data.memo,
             }
 
-            const response = await axios.post("http://localhost:3300/tx/createQR", requestBody);
+            const response = await axios.post("https://stable-pay-production.up.railway.app/tx/createSplit", requestBody);
             setQrCodeUrl(response.data)
             console.log(response.data);
 
