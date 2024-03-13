@@ -3,10 +3,10 @@ import { createQR } from '@/utils/createQr'
 import QRCodeStyling from '@solana/qr-code-styling'
 import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 import axios from 'axios'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from "react-hot-toast"
-import QRCode from 'react-qr-code';
+import io from "socket.io-client"
 
 const QrCodeForm = () => {
     const [qrCodeUrl, setQrCodeUrl] = useState<QRCodeStyling>()
@@ -54,6 +54,23 @@ const QrCodeForm = () => {
             toast.error('An error occur while creating QR code.', { id: notification });
         }
     }
+
+    useEffect(() => {
+        const socket = io("http://localhost:4000");
+
+        socket.on("connect", () => {
+            console.log("Connected to WebSocket server");
+        });
+
+        socket.on("data", (data: any) => {
+            console.log("Received data:", data);
+            toast.success(`Received payment from ${JSON.stringify(data.sender)}`);
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
 
 
     return (
