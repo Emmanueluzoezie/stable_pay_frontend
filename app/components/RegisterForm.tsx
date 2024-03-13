@@ -1,10 +1,12 @@
 "use client"
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from "react-hot-toast"
 
 const RegisterForm = () => { 
+    const router = useRouter()
 
     const {
         register,
@@ -29,6 +31,7 @@ const RegisterForm = () => {
             await localStorage.setItem('payAccount', response.data.split.payingAccount);
             console.log(response.data.split.payingAccount)
             toast.success('Account is successfully created', { id: notification });
+            router.push("/")
         } catch (error) {
             console.error('Error:', error);
             toast.error('Error', { id: notification });
