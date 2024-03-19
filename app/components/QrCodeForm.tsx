@@ -49,7 +49,14 @@ const QrCodeForm = () => {
         qrCode.append(qrRef.current);
       }
 
-      toast.success("Qrcode is Successfully created...", { id: notification });
+      await new Promise<void>((resolve) =>
+        setTimeout(() => {
+          toast.success("Qrcode is Successfully created...", {
+            id: notification,
+          });
+          resolve(); // Resolve the promise once the timeout is complete
+        }, 5000),
+      );
     } catch (error) {
       setFindingError(error);
       console.log(error);
